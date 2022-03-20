@@ -11,7 +11,7 @@ const mw = require("../middleWare/auth")
 router.get("/test", (req, res) =>{
     const bodydata = req.body
     const querydata = req.query
-    res.send({msg: "yeeeyyyy its working !!!!!!!!!!!", body: bodydata, query: querydata})
+    res.send({msg: "it's fine", body: bodydata, query: querydata})
 })
 
 // for author
@@ -27,3 +27,5 @@ router.delete("/blogs", mw.authentication, mw.authroisation2,blogController.dele
 
 
 module.exports = router
+
+

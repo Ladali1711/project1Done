@@ -1,8 +1,7 @@
 const moment = require("moment")
 const blogModel = require("../model/blogModel")
 const authorModel = require("../model/authorModel")
-
-// to create blog doc in DB
+ 
 const createBlog = async (req, res) => {
     try{
         const data = req.body;
@@ -18,7 +17,7 @@ const createBlog = async (req, res) => {
     }
 }
 
-// to get blog according filter
+
 const getBlog = async (req, res) => {
     try{
         const data = req.query;
@@ -27,7 +26,7 @@ const getBlog = async (req, res) => {
             isPublished: true,
             ...data
         }
-        // return res.send({filter: filter})
+        
         const blog = await blogModel.find(filter)
         if (blog.length == 0){
             return res.status(400).send({status: false, msg: "no blogs published"}) 
@@ -38,14 +37,14 @@ const getBlog = async (req, res) => {
     }
 }
 
-// to update blog 
+
 const updateBlog = async (req, res) => {
     try{
         const id = req.params.blogId
         const data = req.body
-        // res.send({id: id})
+        
         const blog = await blogModel.findOne({_id: id})
-        // return res.send({Err: blog})
+      
         if (!blog){
             return res.send({status: false, Err: "blog not found"})
         }
@@ -60,10 +59,7 @@ const updateBlog = async (req, res) => {
         if (data.isDeleted){
             data.deletedAt = moment().format()
         }
-        // else{
-        //     data.deletedAt = " "
-        // }
-        // data.updatedAt = moment().format()
+        
         const updatedBlog = await blogModel.findOneAndUpdate({_id: id}, data, {new: true})
         return res.status(201).send({status: true, msg: updatedBlog})
     }catch(e){
@@ -72,7 +68,7 @@ const updateBlog = async (req, res) => {
 }
 
 
-//to delete blog by id
+
 const deleteBlogById = async (req, res) => {
     try{
         const id = req.params.blogId;
@@ -83,7 +79,7 @@ const deleteBlogById = async (req, res) => {
         if (blog.isDeleted == true){
             return res.status(400).send({status: false, msg: "this blog is already deleted"})
         }
-        // return res.send({Err: blog})
+        
         
         const deletedBlog = await blogModel.findOneAndUpdate({_id: id}, {isDeleted: true, deletedAt: moment().format()}, {new: true})
         return res.status(201).send({status: true, msg: deletedBlog})
@@ -93,7 +89,7 @@ const deleteBlogById = async (req, res) => {
 }
 
 
-// to delete blog by any key 
+ 
 const deleteBlogBykey = async (req, res) => {
     try{
         const data = req.query
@@ -104,7 +100,7 @@ const deleteBlogBykey = async (req, res) => {
         if (blog.isDeleted == true){
             return res.status(400).send({status: false, msg: "this blog is already deleted"})
         }
-        // return res.send({Err: blog})
+        
         
         const deletedBlog = await blogModel.findOneAndUpdate(data, {isDeleted: true, deletedAt: moment().format()}, {new: true})
         return res.status(201).send({status: true, msg: deletedBlog})
